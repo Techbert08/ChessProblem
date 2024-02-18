@@ -40,23 +40,23 @@ var testCases = []struct {
 }{
 	{[]bool{true}, []int{2}, 1, []string{
 		"Heads, rolled 2",
-		"Black Rook at f8",
-		"Bishop can take rook, White wins",
-	}},
-	{[]bool{false}, []int{3}, 1, []string{
-		"Tails, rolled 3",
-		"Black Rook at a6",
+		"Black Rook at h3",
 		"Rook escapes, Black wins",
+	}},
+	{[]bool{false}, []int{5}, 1, []string{
+		"Tails, rolled 5",
+		"Black Rook at e1",
+		"Bishop can take rook, White wins",
 	}},
 	{[]bool{false}, []int{8}, 1, []string{
 		"Tails, rolled 8",
-		"Black Rook at f6",
-		"Bishop can take rook, White wins",
+		"Black Rook at h1",
+		"Rook escapes, Black wins",
 	}},
-	{[]bool{false, true}, []int{5, 5}, 2, []string{
-		"Tails, rolled 5",
-		"Black Rook at c6",
-		"Heads, rolled 5",
+	{[]bool{false, true}, []int{3, 2}, 2, []string{
+		"Tails, rolled 3",
+		"Black Rook at c1",
+		"Heads, rolled 2",
 		"Black Rook at c3",
 		"Rook takes bishop, Black wins",
 	}},

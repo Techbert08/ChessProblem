@@ -42,7 +42,7 @@ func evaluateProblem(c coin, d twoDice, numMoves int) ([]string, error) {
 	out := make([]string, 0)
 	board := internal.NewBoard()
 	rook := internal.NewRook(internal.BLACK)
-	if err := board.PlacePiece(rook, "f6"); err != nil {
+	if err := board.PlacePiece(rook, "h1"); err != nil {
 		return out, err
 	}
 	bishop := internal.NewBishop(internal.WHITE)
