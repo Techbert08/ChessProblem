@@ -7,6 +7,7 @@ import (
 // Position represents a place on the board identified by rank and file.
 // The zero value is the bottom left corner, a1.
 type Position struct {
+	// rank and file are 0-7 representing positions on the chess board.
 	rank, file int
 }
 
@@ -49,7 +50,7 @@ func (p Position) Move(f int, r int) Position {
 	}
 }
 
-// ToString converts the position to standard chess notation (i.e. a1 for rank 1 file a)
-func (p Position) ToString() string {
+// String converts the position to standard chess notation (i.e. a1 for rank 1 file a)
+func (p Position) String() string {
 	return fmt.Sprintf("%c%v", rune(p.file+'a'), p.rank+1)
 }

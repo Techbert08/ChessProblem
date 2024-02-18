@@ -42,13 +42,13 @@ func (d realDice) Roll() int {
 // so far are in the output slice.
 func evaluateProblem(c coin, d twoDice, numMoves int) ([]string, error) {
 	out := make([]string, 0)
-	board := internal.Board{}
-	rook := internal.Rook{C: internal.BLACK}
-	if err := board.PlacePiece(&rook, "f6"); err != nil {
+	board := internal.NewBoard()
+	rook := internal.NewRook(internal.BLACK)
+	if err := board.PlacePiece(rook, "f6"); err != nil {
 		return out, err
 	}
-	bishop := internal.Bishop{C: internal.WHITE}
-	if err := board.PlacePiece(&bishop, "c3"); err != nil {
+	bishop := internal.NewBishop(internal.WHITE)
+	if err := board.PlacePiece(bishop, "c3"); err != nil {
 		return out, err
 	}
 	for i := 0; i < numMoves; i++ {

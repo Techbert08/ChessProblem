@@ -30,7 +30,7 @@ func TestNewPosition(t *testing.T) {
 		}
 		// Also check that printing the Position matches the input on non-error cases.
 		if tc.wantError != nil && got != nil {
-			toString := got.ToString()
+			toString := got.String()
 			if toString != tc.p {
 				t.Errorf("NewPosition(%v).ToString() returned %v, wanted %v", tc.p, toString, tc.p)
 			}
@@ -69,9 +69,9 @@ func TestMove(t *testing.T) {
 		if err != nil {
 			t.Errorf("Bad test case setup, start position %v returned err %v", tc.p, err)
 		}
-		got := pos.Move(tc.f, tc.r).ToString()
+		got := pos.Move(tc.f, tc.r).String()
 		if got != tc.want {
-			t.Errorf("NewPosition(%v).Move(%v,%v).ToString() = %v, wanted %v", tc.p, tc.f, tc.r, got, tc.want)
+			t.Errorf("NewPosition(%v).Move(%v,%v).String() = %v, wanted %v", tc.p, tc.f, tc.r, got, tc.want)
 		}
 	}
 }

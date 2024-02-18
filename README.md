@@ -19,4 +19,4 @@ In the problem, a coin flip determines whether the Rook moves up or right.  Dice
 ## Known issues
 
 *    Only Rook and Bishop movements are implemented
-*    No turn order enforcement is performed.  Pieces can make any legal move
+*    No turn order enforcement is performed.  Pieces can make any legal move.
