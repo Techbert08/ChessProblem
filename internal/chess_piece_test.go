@@ -12,7 +12,7 @@ var rookMovementTestCases = []struct {
 	blackPositions []string
 	want           bool
 }{
-	{"b2", WHITE, "b2", []string{}, []string{}, false},
+	{"b2", WHITE, "b2", []string{}, []string{}, true},
 	{"b2", WHITE, "b4", []string{}, []string{}, true},
 	{"b2", WHITE, "b1", []string{}, []string{}, true},
 	{"b2", WHITE, "c2", []string{}, []string{}, true},
@@ -58,7 +58,7 @@ var bishopMovementTestCases = []struct {
 	blackPositions []string
 	want           bool
 }{
-	{"b2", WHITE, "b2", []string{}, []string{}, false},
+	{"b2", WHITE, "b2", []string{}, []string{}, true},
 	{"b2", WHITE, "c3", []string{}, []string{}, true},
 	{"b2", WHITE, "c1", []string{}, []string{}, true},
 	{"b2", WHITE, "a1", []string{}, []string{}, true},

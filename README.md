@@ -15,6 +15,7 @@ In the problem, a coin flip determines whether the Rook moves up or right.  Dice
 *    This board wraps around at the edges for **both** pieces, though the problem only refers to the Rook's wrapping behaviour.  I assume the Bishop can attack the Rook through an edge.
 *    The directions only refer to the Rook wrapping off the right edge and top edge of the board because it only moves right and up.  I assume that the bottom and left edges wrap for computing Bishop moves. 
 *    If the Rook happens to hit the Bishop, it immediately wins.
+*    If the Rook would land on itself by wrapping around, this is fine.
 
 ## Known issues
 

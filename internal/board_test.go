@@ -30,6 +30,18 @@ func TestMovePiece(t *testing.T) {
 	assertPieceConsistent(t, b, src, mustPosition(t, "d5"))
 }
 
+func TestMovePieceStationary(t *testing.T) {
+	b := NewBoard()
+	src := NewRook(WHITE)
+	mustPlace(t, b, src, "d3")
+
+	if err := b.MovePiece(src, mustPosition(t, "d3")); err != nil {
+		t.Errorf("MovePiece returned err %v, wanted nil", err)
+	}
+
+	assertPieceConsistent(t, b, src, mustPosition(t, "d3"))
+}
+
 func TestMovePieceCapturing(t *testing.T) {
 	b := NewBoard()
 	src := NewRook(WHITE)

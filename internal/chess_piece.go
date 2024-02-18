@@ -4,7 +4,7 @@ import (
 	"fmt"
 )
 
-// Color labels pieces White or Black
+// Color labels pieces WHITE or BLACK
 type Color int
 
 const (
@@ -17,13 +17,14 @@ const (
 // to be moved around the board legally.
 // Unexported functions are used in partnership with Board.
 type ChessPiece interface {
+	// Pulls in String() to emit a human readable representation.
 	fmt.Stringer
 
 	// IsLegalMove returns true is dest is a legal move for this piece
 	// and false otherwise.
 	IsLegalMove(dest Position) bool
 
-	// getPosition returns the current position of this piece on the
+	// GetPosition returns the current position of this piece on the
 	// board.  Returns nil if not on the board.
 	GetPosition() *Position
 
@@ -37,9 +38,44 @@ type ChessPiece interface {
 	remove()
 }
 
+// Rook is a normal chess Rook
+type Rook struct {
+	basicPiece
+}
+
+// NewRook builds a new Rook off-board.
+// It can be added to the board by PlacePiece.
+func NewRook(c Color) *Rook {
+	return &Rook{
+		basicPiece{
+			name:  "Rook",
+			color: c,
+		},
+	}
+}
+
+// Bishop is a normal chess Bishop.
+type Bishop struct {
+	basicPiece
+}
+
+// NewBishop builds a new Bishop off-board.
+// It can be added to the board by PlacePiece.
+func NewBishop(c Color) *Bishop {
+	return &Bishop{
+		basicPiece{
+			name:  "Bishop",
+			color: c,
+		},
+	}
+}
+
 // basicPiece collects behaviors every piece needs to represent position
 // on the board and do basic movements.
 type basicPiece struct {
+	// name is the name of this piece for printing.
+	name string
+
 	// color is the color of the given piece.
 	color Color
 
@@ -70,7 +106,7 @@ func (bP *basicPiece) GetPosition() *Position {
 	return nil
 }
 
-func (bP *basicPiece) printPiece(pieceName string) string {
+func (bP *basicPiece) String() string {
 	color := "Unknown"
 	if bP.color == WHITE {
 		color = "White"
@@ -80,9 +116,9 @@ func (bP *basicPiece) printPiece(pieceName string) string {
 		color = "Empty"
 	}
 	if bP.board == nil {
-		return fmt.Sprintf("Off board %v %v", color, pieceName)
+		return fmt.Sprintf("Off board %v %v", color, bP.name)
 	}
-	return fmt.Sprintf("%v %v at %v", color, pieceName, bP.position)
+	return fmt.Sprintf("%v %v at %v", color, bP.name, bP.position)
 }
 
 // checkClearSpaces returns true if all Positions in positions are clear
@@ -96,30 +132,14 @@ func checkClearSpaces(positions []Position, b *Board) bool {
 	return true
 }
 
-// Rook is a normal chess Rook
-type Rook struct {
-	basicPiece
-}
-
-// NewRook builds a new Rook off-board.
-// It can be added to the board by PlacePiece.
-func NewRook(c Color) *Rook {
-	return &Rook{
-		basicPiece{
-			color: c,
-		},
-	}
-}
-
-// Returns whether a move is legal.
 func (r *Rook) IsLegalMove(dest Position) bool {
 	if r.board == nil {
 		// Not on the board
 		return false
 	}
 	if (dest.rank == r.position.rank) && (dest.file == r.position.file) {
-		// Can't move on top of self.
-		return false
+		// Can stay put.
+		return true
 	}
 	if (dest.rank != r.position.rank) && (dest.file != r.position.file) {
 		// If not in at least the same rank or same file, this is impossible.
@@ -175,35 +195,14 @@ func (r *Rook) IsLegalMove(dest Position) bool {
 	panic(fmt.Sprintf("error computing move of %v to %v", r, dest))
 }
 
-// String prints a short line describing the piece.
-func (r *Rook) String() string {
-	return r.printPiece("Rook")
-}
-
-// Bishop is a normal chess Bishop.
-type Bishop struct {
-	basicPiece
-}
-
-// NewRook builds a new Rook off-board.
-// It can be added to the board by PlacePiece.
-func NewBishop(c Color) *Bishop {
-	return &Bishop{
-		basicPiece{
-			color: c,
-		},
-	}
-}
-
-// Returns whether a move is legal.
 func (b *Bishop) IsLegalMove(dest Position) bool {
 	if b.board == nil {
 		// Not on the board.
 		return false
 	}
 	if (dest.rank == b.position.rank) && (dest.file == b.position.file) {
-		// Can't move on top of self.
-		return false
+		// Can stay put
+		return true
 	}
 	destPiece := b.board.GetPieceAtPosition(dest)
 	if destPiece != nil && destPiece.GetColor() == b.GetColor() {
@@ -248,9 +247,4 @@ func (b *Bishop) IsLegalMove(dest Position) bool {
 		search = search.Move(-1, -1)
 	}
 	return search == dest && checkClearSpaces(downLeftSpaces, b.board)
-}
-
-// String gives a readable representation of the Bishop.
-func (b *Bishop) String() string {
-	return b.printPiece("Bishop")
 }

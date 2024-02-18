@@ -7,9 +7,9 @@ import (
 	"github.com/Techbert08/ChessProblem/internal"
 )
 
-// coin is broken out for easier mocking.
-// Toss returns true for heads and false for tails.
+// coin is an interface for a random (or not) coin
 type coin interface {
+	// Toss returns true for heads and false for tails.
 	Toss() bool
 }
 
@@ -17,21 +17,19 @@ type coin interface {
 // with equal probability.
 type realCoin struct{}
 
-// Use a value receiver, as the struct is stateless
 func (r realCoin) Toss() bool {
 	return rand.Intn(2) == 1
 }
 
-// twoDice is broken out for easier mocking.
-// Roll returns the sum of two six sided die rolls
+// twoDice is an interface for a random (or not) set of dice.
 type twoDice interface {
+	// Roll returns the sum of two six sided die rolls
 	Roll() int
 }
 
 // realDice is an implementation that returns random results.
 type realDice struct{}
 
-// Use a value receiver, as the struct is stateless
 func (d realDice) Roll() int {
 	// Intn returns numbers from zero to 5, so add one per die
 	return rand.Intn(6) + rand.Intn(6) + 2
@@ -53,15 +51,27 @@ func evaluateProblem(c coin, d twoDice, numMoves int) ([]string, error) {
 	}
 	for i := 0; i < numMoves; i++ {
 		roll := d.Roll()
-		out = append(out, fmt.Sprintf("Rolled %v", roll))
 		if c.Toss() {
-			out = append(out, "Flipped heads")
+			out = append(out, fmt.Sprintf("Heads, rolled %v", roll))
+			if err := board.MovePiece(rook, rook.GetPosition().Move(0, roll)); err != nil {
+				return out, err
+			}
 		} else {
-			out = append(out, "Flipped tails")
+			out = append(out, fmt.Sprintf("Tails, rolled %v", roll))
+			if err := board.MovePiece(rook, rook.GetPosition().Move(roll, 0)); err != nil {
+				return out, err
+			}
+		}
+		out = append(out, fmt.Sprint(rook))
+		if bishop.GetPosition() == nil {
+			return append(out, "Rook takes bishop, Black wins"), nil
+		}
+		// Rook should never be nil, panic is fine if it is.
+		if bishop.IsLegalMove(*rook.GetPosition()) {
+			return append(out, "Bishop can take rook, White wins"), nil
 		}
 	}
-	out = append(out, "Black wins")
-	return out, nil
+	return append(out, "Rook escapes, Black wins"), nil
 }
 
 func main() {
